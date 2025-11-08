@@ -1,14 +1,8 @@
 "use client";
 import { useState, useMemo } from "react";
+import { Search } from "lucide-react";
 import { PRODUCTS } from "../../lib/products";
 import ProductCard from "../../components/ProductCard";
-
-function highlightMatch(text, query) {
-  if (!query) return text;
-  const safe = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  const re = new RegExp(`(${safe})`, "ig");
-  return text.replace(re, '<span class="mark">$1</span>');
-}
 
 export default function ProductsPage() {
   const [q, setQ] = useState("");
@@ -33,48 +27,71 @@ export default function ProductsPage() {
   }, [q, category]);
 
   return (
-    <section>
+    <section className="animate-fadeIn">
+      {/* Header */}
+      <div className="text-center mb-8">
+        <h1 className="text-3xl font-bold bg-gradient-to-r from-emerald-600 to-cyan-500 bg-clip-text text-transparent">
+          Our Product Catalog
+        </h1>
+        <p className="text-gray-600 text-sm mt-2 max-w-2xl mx-auto">
+          Explore our complete selection of premium ingredients - from flours
+          and starches to seeds and proteins. Use the search or filters to find
+          exactly what you need.
+        </p>
+      </div>
+
+      {/* Search + Filter */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
-        <div className="flex-1">
+        {/* Search Input */}
+        <div className="relative flex-1">
+          <Search className="absolute left-3 top-2.5 text-gray-400 w-4 h-4" />
           <input
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            placeholder="Search products by name, code or id..."
-            className="w-full md:w-96 border rounded-md px-3 py-2"
+            placeholder="Search products by name, code, or category..."
+            className="w-full md:w-96 border border-gray-300 rounded-lg pl-10 pr-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none transition"
           />
         </div>
 
-        <div className="flex items-center gap-3">
-          <select
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            className="border rounded-md px-3 py-2"
-          >
-            {categories.map((c) => (
-              <option key={c} value={c}>
-                {c}
-              </option>
-            ))}
-          </select>
-          <div className="text-sm text-gray-600">
-            {filtered.length} products
-          </div>
+        {/* Category Filter */}
+        <div className="flex flex-wrap items-center gap-2">
+          {categories.map((c) => (
+            <button
+              key={c}
+              onClick={() => setCategory(c)}
+              className={`px-3 py-1.5 rounded-full text-sm font-medium border transition ${
+                category === c
+                  ? "bg-gradient-to-r from-emerald-600 to-cyan-500 text-white border-transparent shadow-sm"
+                  : "bg-white text-gray-700 border-gray-300 hover:border-emerald-400 hover:text-emerald-600"
+              }`}
+            >
+              {c}
+            </button>
+          ))}
         </div>
       </div>
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      {/* Products Grid */}
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
         {filtered.map((p) => (
           <ProductCard
             key={p.id}
             product={p}
-            highlight={q ? highlightMatch(p.name + " " + p.code, q) : null}
+            query={q}
           />
         ))}
       </div>
 
+      {/* Empty State */}
       {filtered.length === 0 && (
-        <div className="mt-8 text-center text-gray-500">
-          No products match your search — try a different keyword or category.
+        <div className="mt-12 text-center text-gray-500">
+          <div className="text-5xl mb-3">🔍</div>
+          <p className="text-lg font-medium">
+            No products match your search.
+          </p>
+          <p className="text-sm mt-1">
+            Try using a different keyword or choose “All” categories.
+          </p>
         </div>
       )}
     </section>
