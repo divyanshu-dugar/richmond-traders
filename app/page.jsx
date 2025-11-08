@@ -98,7 +98,7 @@ export default function Home() {
               At Richmond Traders Inc., our mission is to provide high-quality
               agricultural ingredients and exceptional service to our customers
               at a competitive price. We continue to expand our product range,
-              global partnerships, and North American reach — delivering
+              global partnerships, and North American reach - delivering
               excellence in every shipment.
             </p>
             <Link
@@ -110,7 +110,7 @@ export default function Home() {
           </div>
 
           <motion.img
-            src="https://images.unsplash.com/photo-1615485737456-5b28b5fa8c85?auto=format&fit=crop&w=900&q=60"
+            src="/warehouse.png"
             alt="Warehouse"
             className="w-full h-72 object-cover rounded-2xl shadow-sm"
           />
